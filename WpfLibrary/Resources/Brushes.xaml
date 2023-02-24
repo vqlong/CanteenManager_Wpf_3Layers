@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <SolidColorBrush x:Key="DefaultSolid" Color="#D7DADD"/>
+    <SolidColorBrush x:Key="PrimarySolid" Color="#044CD0"/>
+    <SolidColorBrush x:Key="SecondarySolid" Color="#7A8793"/>
+    <SolidColorBrush x:Key="SuccessSolid" Color="#1FAE51"/>
+    <SolidColorBrush x:Key="InfoSolid" Color="#09AEAE"/>
+    <SolidColorBrush x:Key="WarningSolid" Color="#E6BC15"/>
+    <SolidColorBrush x:Key="DangerSolid" Color="#D72503"/>
+    <SolidColorBrush x:Key="DarkSolid" Color="#23272B"/>
+
+    <LinearGradientBrush x:Key="PeachGradient" >
+        <GradientStop Offset="0" Color="#FFD86F"/>
+        <GradientStop Offset="0.75" Color="#FC6262"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="AquaGradient" >
+        <GradientStop Offset="0" Color="#2096ff"/>
+        <GradientStop Offset="0.75" Color="#05ffa3"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="PurpleGradient" >
+        <GradientStop Offset="0" Color="#ff6ec4 "/>
+        <GradientStop Offset="0.75" Color="#7873f5"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BlueGradient" >
+        <GradientStop Offset="0" Color="#45cafc"/>
+        <GradientStop Offset="0.75" Color="#303f9f"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="YellowGradient" >
+        <GradientStop Offset="0" Color="#FFEC00"/>
+        <GradientStop Offset="0.75" Color="#FFD400"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="CheckedGradient" >
+        <GradientStop Offset="0" Color="#FFEC00"/>
+        <GradientStop Offset="0.75" Color="#01C32C"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="UncheckedGradient" >
+        <GradientStop Offset="0" Color="#FFD86F"/>
+        <GradientStop Offset="0.75" Color="#DC1C13"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="SkyGradient" >
+        <GradientStop Offset="0" Color="Azure"/>
+        <GradientStop Offset="0.35" Color="AliceBlue"/>
+        <GradientStop Offset="0.65" Color="#D9F2FE"/>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="TurquoiseGradient" Center="0.25 0.5" RadiusX="0.8" RadiusY="0.8" GradientOrigin="0 0.5">
+        <GradientStop Offset="0" Color="#FAF9F6"/>
+        <GradientStop Offset="0.75" Color="#09AEAE"/>
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="AzureGradient" Center="0.25 0.5" RadiusX="0.8" RadiusY="0.8" GradientOrigin="0 0.5">
+        <GradientStop Offset="0" Color="#EDFFFD"/>
+        <GradientStop Offset="0.2" Color="#BFE8FD"/>
+        <GradientStop Offset="0.85" Color="#91D1FE"/>
+    </RadialGradientBrush>
+</ResourceDictionary>

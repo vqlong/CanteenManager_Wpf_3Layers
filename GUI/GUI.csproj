@@ -1,0 +1,119 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <StartupObject></StartupObject>
+	<AssemblyName>Canteen</AssemblyName>
+	<ApplicationIcon>Image\icon.ico</ApplicationIcon>
+	<UseWindowsForms>true</UseWindowsForms>  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+    <Page Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="icon.ico" />
+    <None Remove="Image\Classic.json" />
+    <None Remove="Image\Dark.json" />
+    <None Remove="Image\Default.json" />
+    <None Remove="Image\Equalizer.zip" />
+    <None Remove="Image\Gradient.json" />
+    <None Remove="Image\localdb.db.sample" />
+    <None Remove="Image\rpPrintBill.rdlc" />
+    <None Remove="Image\rpRevenue.rdlc" />
+    <None Remove="noodle.png" />
+    <None Remove="Ole-Regular.ttf" />
+    <None Remove="splash.jpg" />
+    <None Remove="spoon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Image\localdb.db.sample">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Image\rpPrintBill.rdlc" />
+    <EmbeddedResource Include="Image\rpRevenue.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.17" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BUS\BUS.csproj" />
+    <ProjectReference Include="..\Help\Help.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\WpfLibrary\WpfLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\Classic.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\Dark.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\Default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\Equalizer.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\Gradient.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\noodle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\spoon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="Image\splash.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </SplashScreen>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Image\dsBill.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsBill.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Image\dsRevenue.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsRevenue.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Image\dsBill.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsBill.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Image\dsRevenue.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRevenue.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

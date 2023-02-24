@@ -1,0 +1,22 @@
+﻿<Window x:Class="GUI.wPrintBill"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="In hoá đơn" Height="450" MaxWidth="800"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="False"
+        WindowStyle="SingleBorderWindow"       
+        xmlns:mlib="clr-namespace:WpfLibrary;assembly=WpfLibrary"
+        mlib:AttachedManager.CornerRadius="0"
+        Style="{StaticResource Window.CustomStyle}"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:wfrpv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms">
+    <Grid>
+        <WindowsFormsHost >
+            <wfrpv:ReportViewer Load="ReportViewer_Load"/>
+        </WindowsFormsHost>
+    </Grid>
+</Window>

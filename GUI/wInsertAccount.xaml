@@ -1,0 +1,34 @@
+﻿<Window x:Class="GUI.wInsertAccount"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="Thêm tài khoản mới"  Width="400"
+        SizeToContent="Height"
+        Style="{StaticResource Window.CustomStyle}"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+            <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0 0 0 1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="Continue"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel Margin="35 10 35 10">
+        <StackPanel.CommandBindings>
+            <CommandBinding Command="{x:Static local:wAdmin.InsertAccount}" CanExecute="InsertAccount_CanExecute" Executed="InsertAccount_Execute"/>
+
+        </StackPanel.CommandBindings>
+        <TextBlock TextAlignment="Left">Tên đăng nhập:</TextBlock>
+        <TextBox x:Name="txbUsername" Text="{Binding Username, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{StaticResource ErrorTemplate2}"/>
+        <Button Content="Thêm tài khoản mới" Height="30" IsDefault="True" Style="{StaticResource Button.RectangleStyle}" Margin="0 18 0 0" Command="{x:Static local:wAdmin.InsertAccount}"/>
+
+    </StackPanel>
+</Window>

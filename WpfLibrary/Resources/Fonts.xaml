@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="Birthstone">pack://application:,,,/WpfLibrary;component/Resources/Fonts/#Birthstone</FontFamily>
+    <FontFamily x:Key="Playball">pack://application:,,,/WpfLibrary;component/Resources/Fonts/#Playball</FontFamily>
+    <FontFamily x:Key="SendFlowers">pack://application:,,,/WpfLibrary;component/Resources/Fonts/#Send Flowers</FontFamily>
+    <FontFamily x:Key="TwinkleStar">pack://application:,,,/WpfLibrary;component/Resources/Fonts/#Twinkle Star</FontFamily>
+    <FontFamily x:Key="Updock">pack://application:,,,/WpfLibrary;component/Resources/Fonts/#Updock</FontFamily>
+    <FontFamily x:Key="VT323">Fonts/#VT323</FontFamily>
+    <FontFamily x:Key="Ole">Fonts/#Ole</FontFamily>
+</ResourceDictionary>

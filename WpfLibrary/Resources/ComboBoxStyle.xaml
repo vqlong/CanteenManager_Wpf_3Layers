@@ -1,0 +1,207 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WpfLibrary">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Converters.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="ToggleButton.ExpandStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="0"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid>
+                        <Ellipse x:Name="ellipse" 
+                                     Width="{TemplateBinding ActualHeight}"
+                                     Height="{TemplateBinding ActualHeight}"
+                                     Fill="{TemplateBinding Background}"/>
+                        <Line x:Name="line1" 
+                                  X1="{Binding ElementName=ellipse, Path=Width, Converter={StaticResource DivideTwo}}"
+                                  Y1="0"
+                                  X2="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=X1}"
+                                  Y2="{Binding ElementName=ellipse, Path=Width}"
+                                  Stroke="{TemplateBinding Foreground}"
+                                  StrokeThickness="2"
+                                  RenderTransformOrigin="0.5 0.5">
+                            <Line.RenderTransform>
+                                <ScaleTransform ScaleY="0.8"/>
+                            </Line.RenderTransform>
+                        </Line>
+                        <Line x:Name="line2" 
+                                  X1="0"
+                                  Y1="{Binding ElementName=ellipse, Path=Width, Converter={StaticResource DivideTwo}}"
+                                  X2="{Binding ElementName=ellipse, Path=Width}"
+                                  Y2="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Y1}"
+                                  Stroke="{TemplateBinding Foreground}"
+                                  StrokeThickness="2"
+                                  RenderTransformOrigin="0.5 0.5">
+                            <Line.RenderTransform>
+                                <ScaleTransform ScaleX="0.8"/>
+                            </Line.RenderTransform>
+                        </Line>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ellipse" Property="Ellipse.Fill" Value="Crimson"/>
+                            <Setter TargetName="line1" Property="Line.Stroke" Value="White"/>
+                            <Setter TargetName="line2" Property="Line.Stroke" Value="White"/>
+
+                        </Trigger>
+                        <EventTrigger RoutedEvent="Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                         From="0"
+                                                         To="-45"
+                                                         Duration="0:0:0.3"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle"
+                                                         From="-45"
+                                                         To="0"
+                                                         Duration="0:0:0.3"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="Background" Value="Azure"/>
+        <Setter Property="BorderBrush" Value="Teal"/>
+        <Setter Property="Foreground" Value="Tomato"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="MaxDropDownHeight" Value="250"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="local:AttachedManager.CornerRadius" Value="5"/>
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Border Name="borderSelected" 
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    CornerRadius="{TemplateBinding local:AttachedManager.CornerRadius}">
+                        <Grid x:Name="grid" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualHeight}" MinWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualHeight}"/>
+                            </Grid.ColumnDefinitions>
+                            <ToggleButton x:Name="btnExpand" 
+                                                  Grid.Column="1"
+                                                  Style="{StaticResource ToggleButton.ExpandStyle}" 
+                                                  Foreground="{TemplateBinding Foreground}" 
+                                                  IsChecked="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsDropDownOpen}" 
+                                                  RenderTransformOrigin="0.5 0.5"
+                                                  Margin="2"/>
+                            <TextBox x:Name="PART_EditableTextBox" 
+                                             Grid.Column="0"
+                                             IsReadOnly="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsReadOnly}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                     FontFamily="{TemplateBinding FontFamily}"
+                                     FontSize="{TemplateBinding FontSize}"
+                                             Foreground="{TemplateBinding Foreground}"
+                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                             Visibility="Collapsed"
+                                             Margin="{TemplateBinding Padding}"
+                                             />
+                            <!--Dùng SelectionBoxItem thay vì SelectedItem để tránh các lỗi liên thiên-->
+                            <ContentPresenter x:Name="presenter" 
+                                                  Grid.Column="0" 
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      />
+                            <Popup x:Name="PART_Popup" IsOpen="{Binding ElementName=btnExpand, Path=IsChecked, Converter={StaticResource OnlyTrue}}"
+                                        PlacementTarget="{Binding ElementName=borderSelected}"
+                                        VerticalOffset="5"
+                                   AllowsTransparency="True">
+                                <Border Name="borderItems" 
+                                            local:AttachedManager.Double="0"
+                                            Width="{Binding ElementName=borderSelected, Path=ActualWidth}"
+                                            Background="{TemplateBinding Background}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                            CornerRadius="{Binding ElementName=borderSelected, Path=CornerRadius}" 
+                                            >
+
+                                    <ScrollViewer Margin="{TemplateBinding Padding}" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                    <Border.Height>
+                                        <MultiBinding Converter="{StaticResource DoubleMultiple}">
+                                            <Binding RelativeSource="{RelativeSource Mode=Self}" Path="(local:AttachedManager.Double)"/>
+                                            <Binding RelativeSource="{RelativeSource Mode=TemplatedParent}" Path="MaxDropDownHeight"/>
+                                        </MultiBinding>
+                                    </Border.Height>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEditable" Value="True">
+                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="presenter" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsEditable" Value="False">
+                            <Setter TargetName="grid" Property="MaxHeight" Value="{Binding ElementName=presenter, Path=ActualHeight, Converter={StaticResource PlusParameter}, ConverterParameter=4}"/>
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <!--Ẩn borderItems chỉ khi nó co lại hoàn toàn
+                                    popup chỉ đóng lại khi animation của borderItems kết thúc-->
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=btnExpand, Path=IsChecked}" Value="False"/>
+                                <Condition Binding="{Binding ElementName=borderItems, Path=(local:AttachedManager.Double)}" Value="0"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="borderItems" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PART_Popup" Property="IsOpen" Value="False"/>
+                        </MultiDataTrigger>
+                        <EventTrigger SourceName="btnExpand" RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <!--Trong Storyboard không thể binding được tới Height, dùng attached property gián tiếp thay đổi nó-->
+                                    <DoubleAnimation Storyboard.TargetName="borderItems"
+                                                         Storyboard.TargetProperty="(local:AttachedManager.Double)"
+                                                         From="0"
+                                                         To="1" 
+                                                         Duration="0:0:0.3"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger SourceName="btnExpand" RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="borderItems"
+                                                         Storyboard.TargetProperty="(local:AttachedManager.Double)"
+                                                         From="1"
+                                                         To="0"
+                                                         Duration="0:0:0.3"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WpfLibrary.Converters">
+    
+    <local:DoubleDivideThreeConverter x:Key="DivideThree"/>
+    <local:DoubleDivideTwoConverter x:Key="DivideTwo"/>
+    <local:DoubleToStringConverter x:Key="DoubleToString"/>
+    <local:DoubleToStringFormatConverter x:Key="DoubleToStringFormat"/>
+    <local:DoubleMultipleConverter x:Key="DoubleMultiple"/>
+    <local:OnlyReturnTrueConverter x:Key="OnlyTrue"/>
+    <local:DoublePlusParameterConverter x:Key="PlusParameter"/>
+    <local:DoubleDivideParameterConverter x:Key="DivideParameter"/>
+</ResourceDictionary>

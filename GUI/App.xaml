@@ -1,0 +1,23 @@
+﻿<Application x:Class="GUI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:GUI"
+             StartupUri="wLogin.xaml"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/LoginWindowStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/WindowStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/Fonts.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/Converters.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/ErrorTemplates.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/ComboBoxStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/Brushes.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/CheckBoxStyle.xaml"/>
+
+            </ResourceDictionary.MergedDictionaries>
+            
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

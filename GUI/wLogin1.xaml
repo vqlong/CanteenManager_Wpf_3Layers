@@ -1,0 +1,45 @@
+﻿<Window x:Class="GUI.wLogin1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="wLogin1" Height="650" Width="800"
+        xmlns:mctrl="clr-namespace:WpfLibrary.UserControls;assembly=WpfLibrary">
+    <StackPanel Orientation="Vertical" >
+        <Menu>
+            <MenuItem Header="Up" Command="{x:Static mctrl:NumericUpDown.ValueUp}" CommandTarget="{x:Reference nm1}"/>
+        </Menu>
+        <Button Command="{x:Static mctrl:NumericUpDown.ValueDown}" CommandTarget="{x:Reference nm1}">Down</Button>
+        <Button Command="{x:Static mctrl:NumericUpDown.ValueMax}" CommandTarget="{x:Reference nm1}">Max</Button>
+        <Button Command="{x:Static mctrl:NumericUpDown.ValueMin}" CommandTarget="{x:Reference nm1}">Min</Button>
+
+        <mctrl:SlideButton Command="{x:Static mctrl:NumericUpDown.ValueMax}" CommandTarget="{x:Reference nm1}"/>
+        <ScrollBar Orientation="Horizontal"/>
+        <mctrl:SlideButton Command="{x:Static mctrl:NumericUpDown.ValueMin}" CommandTarget="{x:Reference nm1}"/>
+        <mctrl:SlideButton HorizontalAlignment="Center">
+            <mctrl:SlideButton.Style>
+                <Style TargetType="mctrl:SlideButton">
+                    <Setter Property="Background" Value="MediumAquamarine"/>
+                </Style>
+            </mctrl:SlideButton.Style>
+        </mctrl:SlideButton>
+        <mctrl:NumericUpDown x:Name="nm1" MaxValue="99" FontSize="80" ButtonCornerRadius="15"/>
+        
+        <StackPanel Orientation="Horizontal">
+            <mctrl:XSlider x:Name="slider" Mode="HorizontalSlider"  Height="100" Width="100" Background="Azure" Margin="20"/>
+            <mctrl:XSlider x:Name="slider2" Mode="VerticalSlider"  Height="100" Width="100" Background="Azure" Margin="20"/>
+            <mctrl:XSlider x:Name="slider3" Mode="HorizontalSeekSlider"  Height="100" Width="100" Background="Azure" Margin="20"/>
+            <mctrl:XSlider x:Name="slider4" Mode="VerticalSeekSlider"  Height="100" Width="100" Background="Azure" Margin="20"/>
+        </StackPanel>
+        
+        <TextBlock Text="{Binding ElementName=nm1, Path=Value}"/>
+        <TextBlock Text="{Binding ElementName=slider, Path=IsSeekBar}"/>
+        <TextBlock Text="{Binding ElementName=slider2, Path=IsSeekBar}"/>
+        <TextBlock Text="{Binding ElementName=slider3, Path=IsSeekBar}"/>
+        <TextBlock Text="{Binding ElementName=slider4, Path=IsSeekBar}"/>
+        
+        <Slider Orientation="Vertical" Height="100"/>
+    </StackPanel>
+</Window>

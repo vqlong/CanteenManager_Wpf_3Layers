@@ -1,0 +1,458 @@
+﻿<Window x:Class="GUI.wAdmin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="Admin" MinHeight="650" MinWidth="1400"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource Window.CustomStyle}"
+        xmlns:mctrl="clr-namespace:WpfLibrary.UserControls;assembly=WpfLibrary"
+        xmlns:mlib="clr-namespace:WpfLibrary;assembly=WpfLibrary"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:models="clr-namespace:Models;assembly=Models" 
+        xmlns:wfrpv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="{Binding Source={StaticResource UsingTableColorView}, Path=Brush}"/>
+            <Setter Property="TextBlock.Foreground" Value="{Binding Source={StaticResource UsingTableNameColorView}, Path=Brush}"/>
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}"/>
+            <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="MinHeight" Value="80"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Panel.ZIndex" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2 2 0 2" CornerRadius="15 0 0 15" >
+                            <ContentPresenter ContentSource="Header" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{Binding Source={StaticResource ControlBackgroundView}, Path=Brush}"/>
+                                <Setter Property="Foreground" Value="{Binding Source={StaticResource TextColorView}, Path=Brush}"/>
+                                <Setter Property="Panel.ZIndex" Value="99"/>
+                                <Setter Property="Margin" Value="2 -15 -2 -15"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+            <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        </Style>
+
+        <Style x:Key="ComboBox.SingleLineStyle" TargetType="ComboBox" BasedOn="{StaticResource ComboBox.SelectableColorStyle}">
+            <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+            <Setter Property="BorderThickness" Value=" 0 0 0 1"/>
+            <Setter Property="mlib:AttachedManager.CornerRadius" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+        <Style TargetType="mctrl:NumericUpDown">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+            <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}"/>
+            <Setter Property="BorderThickness" Value=" 0 0 0 1"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="mlib:AttachedManager.CornerRadius" Value="4.5"/>
+            <Setter Property="NumberAlignment" Value="Left"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Foreground" Value="{Binding Source={StaticResource TextColorView}, Path=Brush}"/>
+            <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <ObjectDataProvider x:Key="UsingStateEnum"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:UsingState"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <DataTemplate DataType="{x:Type models:UsingState}">
+            <TextBlock Text="{Binding}" />
+        </DataTemplate>
+
+        <CollectionViewSource x:Key="FoodCategoriesView" Source="{Binding Categories}"/>
+        <CollectionViewSource x:Key="CategoriesView" Source="{Binding Categories}"/>
+        <CollectionViewSource x:Key="TablesView" Source="{Binding Tables}"/>
+
+        <CollectionViewSource x:Key="FoodStatusView" Source="{Binding Source={StaticResource UsingStateEnum}}"/>
+        <CollectionViewSource x:Key="CategoryStatusView" Source="{Binding Source={StaticResource UsingStateEnum}}"/>
+        <CollectionViewSource x:Key="TableStatusView" Source="{Binding Source={StaticResource UsingStateEnum}}"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.CommandBindings>
+            <CommandBinding Command="{x:Static local:wAdmin.UpdateFood}" CanExecute="UpdateFood_CanExecute" Executed="UpdateFood_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.DeleteFood}" CanExecute="UpdateFood_CanExecute" Executed="DeleteFood_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.InsertFood}" CanExecute="InsertFood_CanExecute" Executed="InsertFood_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.UpdateCategory}" CanExecute="UpdateCategory_CanExecute" Executed="UpdateCategory_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.DeleteCategory}" CanExecute="UpdateCategory_CanExecute" Executed="DeleteCategory_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.InsertCategory}" CanExecute="InsertCategory_CanExecute" Executed="InsertCategory_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.UpdateTable}" CanExecute="UpdateTable_CanExecute" Executed="UpdateTable_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.DeleteTable}" CanExecute="UpdateTable_CanExecute" Executed="DeleteTable_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.InsertTable}" CanExecute="InsertTable_CanExecute" Executed="InsertTable_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.UpdateAccount}" CanExecute="UpdateAccount_CanExecute" Executed="UpdateAccount_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.DeleteAccount}" CanExecute="UpdateAccount_CanExecute" Executed="DeleteAccount_Execute"/>
+            <CommandBinding Command="{x:Static local:wAdmin.ResetPassword}" CanExecute="UpdateAccount_CanExecute" Executed="ResetPassword_Execute"/>
+        </Grid.CommandBindings>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{Binding Source={StaticResource TextColorView}, Path=Brush}"/>
+                <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="Margin" Value="0 15 0 0"/>
+            </Style>
+        </Grid.Resources>
+        <TabControl x:Name="tcAdmin" TabStripPlacement="Left" SelectionChanged="TabControl_SelectionChanged" Margin="0 0 0 0">
+            <TabItem Header="Doanh thu">
+                <DockPanel Margin="20">
+                    <UniformGrid DockPanel.Dock="Top" Columns="3">
+                        <Border BorderBrush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}" BorderThickness="1" CornerRadius="5" Margin="0 2 5 2">
+                            <DatePicker x:Name="dpkFromDate" SelectedDate="{Binding FirstDayInMonth, Mode=OneWay}"/>
+                        </Border>
+                        <Button Style="{StaticResource Button.RectangleStyle}" Content="In hoá đơn" Click="ButtonPrintBill_Click"/>
+                        <Border BorderBrush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}" BorderThickness="1" CornerRadius="5" Margin="5 2 0 2">
+                            <DatePicker x:Name="dpkToDate" SelectedDate="{Binding LastDayInMonth, Mode=OneWay}"/>
+                        </Border>
+                    </UniformGrid>
+                    <Grid DockPanel.Dock="Bottom">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Command="{x:Static mctrl:NumericUpDown.ValueMin}">&lt;&lt;</Button>
+                            <Button Command="{x:Static mctrl:NumericUpDown.ValueDown}">&lt;</Button>
+                            <mctrl:NumericUpDown x:Name="nmPageNumber" MaxValue="{Binding ElementName=runMaxPage, Path=Text}" Value="1" />
+                            <TextBlock x:Name="txblMaxPage" IsEnabled="{Binding ElementName=ckbDisplayByPage, Path=IsChecked}">                              
+                                <Run>/</Run><Run x:Name="runMaxPage">
+                                                <Run.Text>
+                                                    <MultiBinding Converter="{x:Static local:GetMaxPageConverter.Default}" StringFormat="{}{0}">
+                                                        <Binding ElementName="dpkFromDate" Path="SelectedDate"/>
+                                                        <Binding ElementName="dpkToDate" Path="SelectedDate"/>
+                                                        <Binding ElementName="nmPageSize" Path="Value"/>
+                                                    </MultiBinding>
+                                                </Run.Text>
+                                            </Run>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ckbDisplayByPage, Path=IsChecked}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <Button Command="{x:Static mctrl:NumericUpDown.ValueUp}">&gt;</Button>
+                            <Button Command="{x:Static mctrl:NumericUpDown.ValueMax}">&gt;&gt;</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <TextBlock xml:space="preserve" VerticalAlignment="Center" Margin="0">Số dòng mỗi trang: </TextBlock>
+                            <mctrl:NumericUpDown x:Name="nmPageSize" MaxValue="30" Value="20" />
+                            <CheckBox x:Name="ckbDisplayByPage" 
+                                      Content="Hiện theo trang" 
+                                      IsChecked="True"
+                                      Foreground="{Binding Source={StaticResource TextColorView}, Path=Brush}" 
+                                      BorderBrush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}"
+                                      FontFamily="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"
+                                      FontSize="20"
+                                      MaxHeight="25"
+                                      Margin="5 0 0 0"/>
+                        </StackPanel>
+                        <Grid.Resources>
+                            <Style TargetType="mctrl:NumericUpDown">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+                                <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}"/>
+                                <Setter Property="CornerRadius" Value="5"/>
+                                <Setter Property="mlib:AttachedManager.CornerRadius" Value="4.5"/>
+                                <Setter Property="Width" Value="90"/>
+                                <Setter Property="MinValue" Value="1"/>
+                                <Setter Property="IsEnabled" Value="{Binding ElementName=ckbDisplayByPage, Path=IsChecked}"/>
+                            </Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource Button.RectangleStyle}">
+                                <Setter Property="Width" Value="90"/>
+                                <Setter Property="IsEnabled" Value="{Binding ElementName=ckbDisplayByPage, Path=IsChecked}"/>
+                                <Setter Property="CommandTarget" Value="{x:Reference nmPageNumber}"/>
+                            </Style>
+                        </Grid.Resources>
+                    </Grid>
+                    <TextBlock DockPanel.Dock="Bottom" xml:space="preserve" HorizontalAlignment="Right" Margin="0 10 0 40">Tổng tiền: <Run Text="{Binding ElementName=lsvBills, Path=ItemsSource, Converter={x:Static local:GetRevenueByBillConverter.Default}, ConverterCulture=vi-vn, StringFormat={}{0:C1}}"/></TextBlock>
+                    <ListView x:Name="lsvBills" IsSynchronizedWithCurrentItem="True">
+                        <ListView.ItemsSource>
+                            <MultiBinding Converter="{x:Static local:GetListBillByDateAndPageConverter.Default}" ConverterParameter="{x:Reference ckbDisplayByPage}">
+                                <Binding ElementName="dpkFromDate" Path="SelectedDate"/>
+                                <Binding ElementName="dpkToDate" Path="SelectedDate"/>
+                                <Binding ElementName="nmPageNumber" Path="Value"/>
+                                <Binding ElementName="nmPageSize" Path="Value"/>
+                                <Binding ElementName="ckbDisplayByPage" Path="IsChecked"/>
+                            </MultiBinding>
+                        </ListView.ItemsSource>
+                        <ListView.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+                                <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                <GridViewColumn mlib:AttachedManager.Double="14" mlib:AttachedManager.Tag="{x:Reference lsvBills}" Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                                <GridViewColumn mlib:AttachedManager.Double="15" mlib:AttachedManager.Tag="{x:Reference lsvBills}" Header="Ngày phát sinh" DisplayMemberBinding="{Binding DateCheckIn}"/>
+                                <GridViewColumn mlib:AttachedManager.Double="16" mlib:AttachedManager.Tag="{x:Reference lsvBills}" Header="Ngày thanh toán" DisplayMemberBinding="{Binding DateCheckOut}"/>
+                                <GridViewColumn mlib:AttachedManager.Double="17" mlib:AttachedManager.Tag="{x:Reference lsvBills}" Header="Tên bàn" DisplayMemberBinding="{Binding TableName}"/>
+                                <GridViewColumn mlib:AttachedManager.Double="18" mlib:AttachedManager.Tag="{x:Reference lsvBills}" Header="Giảm giá (%)" DisplayMemberBinding="{Binding Discount}"/>
+                                <GridViewColumn mlib:AttachedManager.Double="19" mlib:AttachedManager.Tag="{x:Reference lsvBills}" Header="Tiền thanh toán (Vnđ)" DisplayMemberBinding="{Binding TotalPrice, ConverterCulture=vi-vn, StringFormat={}{0:C1}}"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Thức ăn">
+                <DockPanel Margin="20" >
+                    <StackPanel DockPanel.Dock="Right" Width="400" Margin="20 0 0 0">
+
+                        <TextBox x:Name="txbSearchFood" TextChanged="TextBox_TextChanged"/>
+
+                        <TextBlock >Id:</TextBlock>
+                        <TextBlock Text="{Binding ElementName=lsvFoods, Path=SelectedItem.Id}" Foreground="{Binding Source={StaticResource BillColorView}, Path=Brush}" Margin="0"/>
+
+                        <TextBlock >Tên món:</TextBlock>
+                        <TextBox x:Name="txbFoodName" Text="{Binding ElementName=lsvFoods, Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                        <TextBlock >Danh mục:</TextBlock>
+                        <ComboBox x:Name="cbFoodCategories" ItemsSource="{Binding Source={StaticResource FoodCategoriesView}}" IsEditable="True" IsReadOnly="True" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding ElementName=lsvFoods, Path=SelectedItem.CategoryId, Mode=OneWay}" Style="{StaticResource ComboBox.SingleLineStyle}" />
+
+                        <TextBlock >Giá:</TextBlock>
+                        <mctrl:NumericUpDown x:Name="nmPrice" Value="{Binding ElementName=lsvFoods, Path=SelectedItem.Price, Mode=OneWay}" />
+
+                        <TextBlock >Trạng thái:</TextBlock>
+                        <ComboBox x:Name="cbFoodStatus" ItemsSource="{Binding Source={StaticResource FoodStatusView}}" Height="30" SelectedItem="{Binding ElementName=lsvFoods, Path=SelectedItem.FoodStatus, Mode=OneWay}" Style="{StaticResource ComboBox.SingleLineStyle}" />
+
+                        <UniformGrid Columns="3" Rows="1" Height="30" Margin="0 15 0 0">
+                            <Button Content="Cập nhật" Style="{StaticResource Button.RectangleStyle}" IsDefault="True"  Margin="0 0 5 0" Command="{x:Static local:wAdmin.UpdateFood}"/>
+                            <Button Content="Thêm" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 5 0" Command="{x:Static local:wAdmin.InsertFood}"/>
+                            <Button Content="Xoá" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 0 0" Command="{x:Static local:wAdmin.DeleteFood}"/>
+                        </UniformGrid>
+                    </StackPanel>
+                    
+                    <Grid>
+                        <ListView x:Name="lsvFoods" ItemsSource="{Binding Foods}" IsSynchronizedWithCurrentItem="True">
+                            <ListView.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+                                    <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="Dừng bán">
+                                            <Setter Property="Foreground" Value="{StaticResource DangerSolid}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                    <GridViewColumn mlib:AttachedManager.Double="6" mlib:AttachedManager.Tag="{x:Reference lsvFoods}" Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="7" mlib:AttachedManager.Tag="{x:Reference lsvFoods}" Header="Tên món" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="8" mlib:AttachedManager.Tag="{x:Reference lsvFoods}" Header="Danh mục" DisplayMemberBinding="{Binding Category.Name}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="9" mlib:AttachedManager.Tag="{x:Reference lsvFoods}" Header="Giá" DisplayMemberBinding="{Binding Price, ConverterCulture=vi-vn, StringFormat={}{0:C1}}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="10" mlib:AttachedManager.Tag="{x:Reference lsvFoods}" Header="Trạng thái" DisplayMemberBinding="{Binding FoodStatus}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Danh mục">
+                <DockPanel Margin="20" >
+                    <StackPanel DockPanel.Dock="Right" Width="400" Margin="20 0 0 0">
+
+                        <TextBox x:Name="txbSearchCategory" TextChanged="TextBox_TextChanged"/>
+
+                        <TextBlock >Id:</TextBlock>
+                        <TextBlock Text="{Binding ElementName=lsvCategories, Path=SelectedItem.Id}" Foreground="{Binding Source={StaticResource BillColorView}, Path=Brush}" Margin="0"/>
+
+                        <TextBlock >Tên mục:</TextBlock>
+                        <TextBox x:Name="txbCategoryName" Text="{Binding ElementName=lsvCategories, Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                        <TextBlock >Trạng thái:</TextBlock>
+                        <ComboBox x:Name="cbCategoryStatus" ItemsSource="{Binding Source={StaticResource CategoryStatusView}}" Height="30" SelectedItem="{Binding ElementName=lsvCategories, Path=SelectedItem.CategoryStatus, Mode=OneWay}" Style="{StaticResource ComboBox.SingleLineStyle}" />
+
+                        <UniformGrid Columns="3" Rows="1" Height="30" Margin="0 15 0 0">
+                            <Button Content="Cập nhật" Style="{StaticResource Button.RectangleStyle}" IsDefault="True"  Margin="0 0 5 0" Command="{x:Static local:wAdmin.UpdateCategory}"/>
+                            <Button Content="Thêm" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 5 0" Command="{x:Static local:wAdmin.InsertCategory}"/>
+                            <Button Content="Xoá" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 0 0" Command="{x:Static local:wAdmin.DeleteCategory}"/>
+                        </UniformGrid>
+                    </StackPanel>
+
+                    <Grid>
+                        <ListView x:Name="lsvCategories" ItemsSource="{Binding Source={StaticResource CategoriesView}}" IsSynchronizedWithCurrentItem="True">
+                            <ListView.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+                                    <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="Dừng bán">
+                                            <Setter Property="Foreground" Value="{StaticResource DangerSolid}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                    <GridViewColumn mlib:AttachedManager.Double="11" mlib:AttachedManager.Tag="{x:Reference lsvCategories}" Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="12" mlib:AttachedManager.Tag="{x:Reference lsvCategories}" Header="Tên danh mục" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="13" mlib:AttachedManager.Tag="{x:Reference lsvCategories}" Header="Trạng thái" DisplayMemberBinding="{Binding CategoryStatus}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Bàn ăn">
+                <DockPanel Margin="20" >
+                    <StackPanel DockPanel.Dock="Right" Width="400" Margin="20 0 0 0">
+
+                        <TextBlock >Id:</TextBlock>
+                        <TextBlock Text="{Binding ElementName=lsvTables, Path=SelectedItem.Id}" Foreground="{Binding Source={StaticResource BillColorView}, Path=Brush}" Margin="0"/>
+
+                        <TextBlock >Tên bàn:</TextBlock>
+                        <TextBox x:Name="txbTableName" Text="{Binding ElementName=lsvTables, Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        
+                        <TextBlock >Tình trạng:</TextBlock>
+                        <TextBlock Text="{Binding ElementName=lsvTables, Path=SelectedItem.Status}" Foreground="{Binding Source={StaticResource BillColorView}, Path=Brush}" Margin="0"/>
+
+                        <TextBlock >Trạng thái:</TextBlock>
+                        <ComboBox x:Name="cbTableStatus" ItemsSource="{Binding Source={StaticResource TableStatusView}}" Height="30" SelectedItem="{Binding ElementName=lsvTables, Path=SelectedItem.UsingState, Mode=OneWay}" Style="{StaticResource ComboBox.SingleLineStyle}" />
+
+                        <UniformGrid Columns="3" Rows="1" Height="30" Margin="0 15 0 0">
+                            <Button Content="Cập nhật" Style="{StaticResource Button.RectangleStyle}" IsDefault="True"  Margin="0 0 5 0" Command="{x:Static local:wAdmin.UpdateTable}"/>
+                            <Button Content="Thêm" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 5 0" Command="{x:Static local:wAdmin.InsertTable}"/>
+                            <Button Content="Xoá" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 0 0" Command="{x:Static local:wAdmin.DeleteTable}"/>
+                        </UniformGrid>
+                    </StackPanel>
+
+                    <Grid>
+                        <ListView x:Name="lsvTables" ItemsSource="{Binding Source={StaticResource TablesView}}" IsSynchronizedWithCurrentItem="True">
+                            <ListView.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+                                    <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="Dừng bán">
+                                            <Setter Property="Foreground" Value="{StaticResource DangerSolid}"/>
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="Có người">
+                                            <Setter Property="Foreground" Value="{StaticResource SuccessSolid}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                    <GridViewColumn mlib:AttachedManager.Double="20" mlib:AttachedManager.Tag="{x:Reference lsvTables}" Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="21" mlib:AttachedManager.Tag="{x:Reference lsvTables}" Header="Tên bàn" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="22" mlib:AttachedManager.Tag="{x:Reference lsvTables}" Header="Tình trạng" DisplayMemberBinding="{Binding Status}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="23" mlib:AttachedManager.Tag="{x:Reference lsvTables}" Header="Trạng thái" DisplayMemberBinding="{Binding UsingState}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Tài khoản">
+                <DockPanel Margin="20" >
+                    <StackPanel DockPanel.Dock="Right" Width="400" Margin="20 0 0 0">
+
+                        <TextBlock >Tên đăng nhập:</TextBlock>
+                        <TextBlock Text="{Binding ElementName=lsvAccounts, Path=SelectedItem.Username}" Foreground="{Binding Source={StaticResource BillColorView}, Path=Brush}" Margin="0"/>
+
+                        <TextBlock >Tên hiển thị:</TextBlock>
+                        <TextBox x:Name="txbDisplayName" Text="{Binding ElementName=lsvAccounts, Path=SelectedItem.DisplayName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                        <TextBlock >Loại tài khoản:</TextBlock>
+                        <TextBlock Text="{Binding ElementName=lsvAccounts, Path=SelectedItem.Type}" Foreground="{Binding Source={StaticResource BillColorView}, Path=Brush}" Margin="0"/>
+
+                        <UniformGrid Columns="3" Rows="1" Height="30" Margin="0 15 0 0">
+                            <Button Content="Cập nhật" Style="{StaticResource Button.RectangleStyle}" IsDefault="True"  Margin="0 0 5 0" Command="{x:Static local:wAdmin.UpdateAccount}"/>
+                            <Button Content="Thêm" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 5 0" Click="ButtonInsertAccount_Click"/>
+                            <Button Content="Xoá" Style="{StaticResource Button.RectangleStyle}" Margin="5 0 0 0" Command="{x:Static local:wAdmin.DeleteAccount}"/>
+                        </UniformGrid>
+                        <Button Content="Đặt lại mật khẩu" Height="30" Style="{StaticResource Button.RectangleStyle}" Margin="0 15 0 0" Command="{x:Static local:wAdmin.ResetPassword}"/>
+                    </StackPanel>
+
+                    <Grid>
+                        <ListView x:Name="lsvAccounts" ItemsSource="{Binding Accounts}" IsSynchronizedWithCurrentItem="True">
+                            <ListView.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding Source={StaticResource BillColorView}, Path=Brush}"/>
+                                    <Setter Property="FontFamily" Value="{Binding Source={StaticResource FontFamiliesView}, Path=Source}"/>
+                                    <Setter Property="FontSize" Value="20"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value="Quản lý">
+                                            <Setter Property="Foreground" Value="{StaticResource WarningSolid}"/>
+                                        </Trigger>
+                                        <Trigger Property="Text" Value="admin">
+                                            <Setter Property="Foreground" Value="{StaticResource DangerSolid}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                    <GridViewColumn mlib:AttachedManager.Double="24" mlib:AttachedManager.Tag="{x:Reference lsvAccounts}" Header="Tên đăng nhập" DisplayMemberBinding="{Binding Username}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="25" mlib:AttachedManager.Tag="{x:Reference lsvAccounts}" Header="Tên hiển thị" DisplayMemberBinding="{Binding DisplayName}"/>
+                                    <GridViewColumn mlib:AttachedManager.Double="26" mlib:AttachedManager.Tag="{x:Reference lsvAccounts}" Header="Loại tài khoản" DisplayMemberBinding="{Binding Type}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem x:Name="tabReport" Header="Thống kê" Selector.Selected="tabReport_Selected"/>
+            <TabControl.Template>
+                <ControlTemplate TargetType="TabControl">
+                    <Border >
+                        <DockPanel ClipToBounds="True">
+                            <TabPanel DockPanel.Dock="{TemplateBinding TabStripPlacement}" IsItemsHost="True"  Panel.ZIndex="99"/>
+                            <Border Background="{Binding Source={StaticResource ControlBackgroundView}, Path=Brush}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=BorderBrush}" BorderThickness="2" CornerRadius="0 15 12.5 0" Panel.ZIndex="1">
+                                <ContentPresenter ContentSource="SelectedContent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                            </Border>
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </TabControl.Template>
+        </TabControl>
+    </Grid>
+</Window>

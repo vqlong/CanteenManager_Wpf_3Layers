@@ -1,0 +1,103 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:localcontrol="clr-namespace:WpfLibrary.UserControls"
+                    xmlns:localconvert="clr-namespace:WpfLibrary.Converters"
+                    xmlns:local="clr-namespace:WpfLibrary">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Converters.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!--Không dùng-->
+    <ControlTemplate x:Key="ErrorTemplate1">
+        <DockPanel LastChildFill="True">
+            <Border DockPanel.Dock="Right"
+                        Margin="2,0,0,0" 
+                        Background="Crimson" 
+                        Width="{TemplateBinding ActualHeight}" 
+                        Height="{TemplateBinding ActualHeight}" 
+                        CornerRadius="{TemplateBinding ActualHeight, Converter={StaticResource DivideTwo}}"
+                        ToolTip="{Binding ElementName=adorner1, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+
+                <TextBlock Text="!" 
+                               FontSize="{Binding ElementName=adorner1, Path=AdornedElement.FontSize}" 
+                               Foreground="White" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"/>
+            </Border>
+
+            <AdornedElementPlaceholder x:Name="adorner1" >
+                <Border BorderBrush="Crimson" 
+                            BorderThickness="2" 
+                            CornerRadius="{TemplateBinding ActualHeight, Converter={StaticResource DivideTwo}}"/>
+            </AdornedElementPlaceholder>
+        </DockPanel>
+    </ControlTemplate>
+
+    <!--CornerRadius="3.5"-->
+    <ControlTemplate x:Key="ErrorTemplate2">
+        <DockPanel LastChildFill="True">
+            <Canvas DockPanel.Dock="Bottom">
+                <TextBlock Text="{Binding [0].ErrorContent}" 
+                           Foreground="BlueViolet"/>
+            </Canvas>
+
+
+            <Border DockPanel.Dock="Right"
+                        Margin="2,0,0,0" 
+                        Background="Crimson" 
+                        Width="{Binding ElementName=adorner3, Path=ActualHeight}" 
+                        Height="{Binding ElementName=adorner3, Path=ActualHeight}" 
+                        CornerRadius="{TemplateBinding ActualHeight, Converter={StaticResource DivideTwo}}"
+                    ToolTipService.InitialShowDelay="0"
+                        ToolTip="{Binding ElementName=adorner3, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+
+                <TextBlock Text="!" 
+                               FontSize="{Binding ElementName=adorner3, Path=AdornedElement.FontSize}" 
+                               Foreground="White" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"/>
+            </Border>
+
+            <AdornedElementPlaceholder x:Name="adorner3" >
+                <Border BorderBrush="Crimson" 
+                        BorderThickness="2" 
+                        CornerRadius="3.5"/>
+            </AdornedElementPlaceholder>
+        </DockPanel>
+    </ControlTemplate>
+
+    <!--CornerRadius binding-->
+    <ControlTemplate x:Key="ErrorTemplate3">
+        <DockPanel LastChildFill="True">
+            <Canvas DockPanel.Dock="Bottom">
+                <TextBlock Text="{Binding [0].ErrorContent}" 
+                           Foreground="BlueViolet"/>
+            </Canvas>
+
+  
+            <Border DockPanel.Dock="Right"
+                        Margin="2,0,0,0" 
+                        Background="Crimson" 
+                        Width="{Binding ElementName=adorner3, Path=ActualHeight}" 
+                        Height="{Binding ElementName=adorner3, Path=ActualHeight}" 
+                        CornerRadius="{TemplateBinding ActualHeight, Converter={StaticResource DivideTwo}}"
+                    ToolTipService.InitialShowDelay="0"
+                        ToolTip="{Binding ElementName=adorner3, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+
+                <TextBlock Text="!" 
+                               FontSize="{Binding ElementName=adorner3, Path=AdornedElement.FontSize}" 
+                               Foreground="White" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"/>
+            </Border>
+
+            <AdornedElementPlaceholder x:Name="adorner3" >
+                <Border BorderBrush="Crimson" 
+                        BorderThickness="2" 
+                        CornerRadius="{Binding ElementName=adorner3, Path=AdornedElement.(local:AttachedManager.CornerRadius)}"/>
+            </AdornedElementPlaceholder>
+        </DockPanel>
+    </ControlTemplate>
+
+</ResourceDictionary>

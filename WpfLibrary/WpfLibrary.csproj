@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\cat.jpg" />
+    <None Remove="Resources\Fonts\Birthstone-Regular.ttf" />
+    <None Remove="Resources\Fonts\Ole-Regular.ttf" />
+    <None Remove="Resources\Fonts\Playball-Regular.ttf" />
+    <None Remove="Resources\Fonts\SendFlowers-Regular.ttf" />
+    <None Remove="Resources\Fonts\TwinkleStar-Regular.ttf" />
+    <None Remove="Resources\Fonts\Updock-Regular.ttf" />
+    <None Remove="Resources\Fonts\VT323-Regular.ttf" />
+    <None Remove="Resources\icon.png" />
+    <None Remove="Resources\Images\icon50x50.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\cat.jpg" />
+    <Resource Include="Resources\Fonts\Birthstone-Regular.ttf" />
+    <Resource Include="Resources\Fonts\Ole-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Playball-Regular.ttf" />
+    <Resource Include="Resources\Fonts\SendFlowers-Regular.ttf" />
+    <Resource Include="Resources\Fonts\TwinkleStar-Regular.ttf" />
+    <Resource Include="Resources\Fonts\Updock-Regular.ttf" />
+    <Resource Include="Resources\Fonts\VT323-Regular.ttf" />
+    <Resource Include="Resources\Images\icon.png" />
+    <Resource Include="Resources\Images\icon50x50.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\WindowStyle.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

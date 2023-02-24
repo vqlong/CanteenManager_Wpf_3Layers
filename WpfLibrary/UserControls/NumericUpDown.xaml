@@ -1,0 +1,179 @@
+﻿<UserControl x:Class="WpfLibrary.UserControls.NumericUpDown"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localcontrol="clr-namespace:WpfLibrary.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="90"
+             xmlns:localconvert="clr-namespace:WpfLibrary.Converters"
+             xmlns:local="clr-namespace:WpfLibrary">
+
+    <TextBlock>This is the content of the NumericUpDown</TextBlock>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/Converters.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/ErrorTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="RepeatButton.CustomStyle" TargetType="RepeatButton">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=Foreground}"/>
+                <Setter Property="FontSize" Value="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=FontSize}"/>
+                <Setter Property="Delay" Value="400"/>
+                <Setter Property="Interval" Value="40"/>
+                <Setter Property="Grid.Column" Value="6"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RepeatButton">
+                            <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=(local:AttachedManager.CornerRadius)}">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RepeatButton.IncreaseStyle" TargetType="RepeatButton" BasedOn="{StaticResource RepeatButton.CustomStyle}">
+                <Setter Property="Content" >
+                    <Setter.Value>
+                        <Border Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RepeatButton}, Path=ActualHeight, Converter={StaticResource DivideParameter}, ConverterParameter=1.2}"
+                                >
+                            <Border.Background>
+                                <DrawingBrush Stretch="None" >
+                                    <DrawingBrush.Drawing>
+                                        <GeometryDrawing >
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RepeatButton}, Path=Foreground}" Thickness="3"/>
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <GeometryGroup>
+                                                    <Geometry>M 50 0 L 50 100</Geometry>
+                                                    <Geometry>M 0 50 L 100 50</Geometry>
+                                                </GeometryGroup>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Border.Background>
+                        </Border>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Grid.Row" Value="0"/>
+                <EventSetter Event="Click" Handler="IncreaseButton_Click"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Button.Background" Value="LimeGreen"/>
+                        <Setter Property="Button.Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="RepeatButton.DecreaseStyle" TargetType="RepeatButton" BasedOn="{StaticResource RepeatButton.CustomStyle}">
+                <Setter Property="Content" >
+                    <Setter.Value>
+                        <Border Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RepeatButton}, Path=ActualHeight, Converter={StaticResource DivideParameter}, ConverterParameter=1.2}"
+                                >
+                            <Border.Background>
+                                <DrawingBrush Stretch="None"  >
+                                    <DrawingBrush.Drawing>
+                                        <GeometryDrawing >
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=RepeatButton}, Path=Foreground}" Thickness="3"/>
+                                            </GeometryDrawing.Pen>
+                                            <GeometryDrawing.Geometry>
+                                                <Geometry>M 0 50 L 100 50</Geometry>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Border.Background>
+                        </Border>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Grid.Row" Value="1"/>
+                <EventSetter Event="Click" Handler="DecreaseButton_Click"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Button.Background" Value="Crimson"/>
+                        <Setter Property="Button.Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=CornerRadius}">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width ="*"/>
+                        <ColumnDefinition Width="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=ActualHeight}"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Border Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}" Background="Pink" CornerRadius="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=CornerRadius}"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Grid.OpacityMask>
+                    <Border Name="borderTextBox"
+                            Grid.Row="0" Grid.Column="0"
+                            Grid.RowSpan="2" Grid.ColumnSpan="5"
+                            CornerRadius="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=CornerRadius}">
+
+                        <TextBox Name="txbInput"
+                                 Background="Transparent"
+                                 Foreground="{TemplateBinding Foreground}"
+                                 FontSize="{TemplateBinding FontSize}"
+                                 BorderThickness="0"
+                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                 TextAlignment="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=NumberAlignment}"
+                                 Validation.Error="TextBox_Error"
+                                 local:AttachedManager.CornerRadius="{Binding RelativeSource={x:Static RelativeSource.TemplatedParent}, Path=CornerRadius}"
+                                 Validation.ErrorTemplate="{StaticResource ErrorTemplate2}">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource DoubleToStringFormat}" UpdateSourceTrigger="LostFocus" NotifyOnValidationError="True">
+                                    <Binding RelativeSource="{x:Static RelativeSource.TemplatedParent}" Path="Value" Mode="TwoWay"/>
+                                    <Binding RelativeSource="{x:Static RelativeSource.TemplatedParent}" Path="Precision" Mode="OneWay"/>
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=txbInput, Path=(Validation.HasError)}" Value="True">
+                                        <Setter Property="Background" Value="LightPink"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+
+                    <RepeatButton Style="{StaticResource RepeatButton.IncreaseStyle}"
+                                  local:AttachedManager.CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ButtonCornerRadius}"/>
+
+                    <RepeatButton Style="{StaticResource RepeatButton.DecreaseStyle}"
+                                  local:AttachedManager.CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ButtonCornerRadius}"/>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

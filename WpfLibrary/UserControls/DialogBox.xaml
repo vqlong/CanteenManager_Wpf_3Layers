@@ -1,0 +1,122 @@
+﻿<Window x:Class="WpfLibrary.UserControls.DialogBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:localconvert="clr-namespace:WpfLibrary.Converters"
+        Title="DialogBox" 
+        MinHeight="200"
+        MinWidth="300"
+        MaxWidth="400"
+        Style="{StaticResource Window.CustomStyle}"
+        Background="{StaticResource InfoSolid}"
+        BorderBrush="{StaticResource DefaultSolid}" 
+        ResizeMode="NoResize"
+        RenderOptions.BitmapScalingMode="HighQuality" 
+        SizeToContent="Height">
+    <Window.Resources>
+        <ResourceDictionary>
+            
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/Converters.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/WpfLibrary;component/Resources/Brushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource PeachGradient}"/>
+                <Setter Property="Foreground" Value="{StaticResource YellowGradient}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PurpleGradient}"/>
+                <Setter Property="Width" Value="60"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding ActualWidth, Converter={StaticResource DivideTwo}}"
+                                    Width="{TemplateBinding ActualWidth}"
+                                    Height="{TemplateBinding ActualWidth}"
+                                SnapsToDevicePixels="True"
+                                    ToolTipService.InitialShowDelay="0">
+                                <Border.ToolTip>
+                                    <ToolTip Content="{TemplateBinding Content}"/>
+                                </Border.ToolTip>
+                                <ContentPresenter TextBlock.Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#ccf9ff"/>
+                                    <Setter Property="BorderBrush" Value="#00acdf"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#7ce8ff"/>
+                                    <Setter Property="BorderBrush" Value="#0080bf"/>
+                                </Trigger>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter Property="BorderBrush" Value="#7873f5"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" Value="#FFF4F4F4"/>
+                                    <Setter Property="BorderBrush" Value="#FFADB2B5"/>
+                                    <Setter Property="TextElement.Foreground" Value="#FF838383"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" ButtonBase.Click="Button_Click" Margin="0 0 10 0">
+            <Button x:Name="btnCancel" DockPanel.Dock="Right" Visibility="Collapsed" >Cancel</Button>
+            <Button x:Name="btnNo" DockPanel.Dock="Right" Visibility="Collapsed" >No</Button>
+            <Button x:Name="btnYes" DockPanel.Dock="Right" Visibility="Collapsed" IsDefault="True" >Yes</Button>
+            <Button x:Name="btnOK" DockPanel.Dock="Right" Visibility="Collapsed" IsDefault="True">OK</Button>
+        </DockPanel>
+
+        <Rectangle DockPanel.Dock="Bottom" Stroke="{StaticResource UncheckedGradient}" StrokeThickness="1"/>
+
+        <Grid DockPanel.Dock="Bottom" Margin="10 5 5 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border x:Name="iconInfo" Visibility="Collapsed" Width="60" Height="60" CornerRadius="30" Background="{StaticResource AzureGradient}" Margin="5">
+                <Border Width="57" Height="57" CornerRadius="28.5" BorderThickness="2" BorderBrush="WhiteSmoke">
+                    <TextBlock FontSize="40" FontWeight="Bold" Foreground="{StaticResource BlueGradient}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cascadia Mono">i</TextBlock>
+                </Border>
+            </Border>
+            <Border x:Name="iconError" Visibility="Collapsed" Width="60" Height="60" CornerRadius="30" Background="#D72503"  Margin="5">
+                <Border Width="57" Height="57" CornerRadius="28.5" BorderThickness="2" BorderBrush="WhiteSmoke" >
+                    <TextBlock FontSize="40" FontWeight="Bold" Foreground="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe Print">X</TextBlock>
+                </Border>
+            </Border>
+            <Border x:Name="iconWarning" Visibility="Collapsed" Width="60" Height="60" Margin="5">
+                <Grid >
+                    <Path Data="M 2 42
+                          L 26 3 
+                          A 5 5 0 0 1 34 3 
+                          L 58 42 
+                          A 5 5 0 0 1 54 50
+                          L 6 50
+                          A 5 5 0 0 1 2 42
+                          Z" 
+                          Fill="{StaticResource YellowGradient}" 
+                          Stroke="#D72503"
+                          StrokeThickness="2"/>
+                    <TextBlock FontSize="40" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial Rounded MT Bold">!</TextBlock>
+                </Grid>
+            </Border>
+            <Border x:Name="iconQuestion" Visibility="Collapsed" Width="60" Height="60" CornerRadius="30" Background="{StaticResource AzureGradient}" Margin="5">
+                <Border Width="57" Height="57" CornerRadius="28.5" BorderThickness="2" BorderBrush="WhiteSmoke">
+                    <TextBlock FontSize="40" FontWeight="Bold" Foreground="{StaticResource BlueGradient}" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cascadia Mono">?</TextBlock>
+                </Border>
+            </Border>
+            <TextBlock Grid.Column="1" Text="{Binding Message}" Foreground="WhiteSmoke" FontSize="16"  VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
+        </Grid>
+    </DockPanel>
+</Window>

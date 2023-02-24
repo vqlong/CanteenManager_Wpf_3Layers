@@ -1,0 +1,138 @@
+﻿<Window x:Class="GUI.wLogin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="Đăng nhập"
+        WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing"
+        MouseDown="Window_MouseDown"
+        Icon="Image/icon.ico" 
+        Width="880"
+        MinWidth="880"
+        Height="570" LostKeyboardFocus="Window_LostKeyboardFocus"
+        MinHeight="570"
+        Style="{StaticResource Window.LoginStyle}">
+    <Window.Resources>
+        
+        <ControlTemplate x:Key="ShowPasswordBox" TargetType="PasswordBox">
+            <TextBox x:Name="txbShowPassword" Background="Transparent" BorderThickness="0"/>
+        </ControlTemplate>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="1"
+                                BorderBrush="Silver"
+                                CornerRadius="10">
+                            <ContentPresenter TextBlock.FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#ccf9ff"/>
+                                <Setter Property="BorderBrush" Value="#00acdf"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#7ce8ff"/>
+                                <Setter Property="BorderBrush" Value="#0080bf"/>
+                            </Trigger>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" Value="#7873f5"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" Value="#FFF4F4F4"/>
+                                <Setter Property="BorderBrush" Value="#FFADB2B5"/>
+                                <Setter Property="TextElement.Foreground" Value="#FF838383"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <ProgressBar Name="progress"
+                                         Background="{TemplateBinding Background}" 
+                                         BorderThickness="0"/>
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LimeGreen"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="progress" Property="IsIndeterminate" Value="True"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Content" Value="Kết nối thành công!"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="progress" Property="IsIndeterminate" Value="False"/>
+                                <Setter Property="Background" Value="LimeGreen"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Content" Value="Kết nối thất bại!"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="progress" Property="IsIndeterminate" Value="False"/>
+                                <Setter Property="Background" Value="Red"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <StackPanel Orientation="Vertical" TextBlock.FontSize="40" Margin="30 0 30 0">
+            <TextBlock Text="Tên đăng nhập:" Margin="0,10,0,0"/>
+            <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="10">
+                <TextBox x:Name="txbUsername" Text="admin" Background="Transparent" BorderThickness="0"/>
+            </Border>
+            <TextBlock Text="Mật khẩu:" Margin="0,10,0,0"/>
+            <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="10">
+                <!--KeyboardNavigation.TabNavigation="Continue" Truyền focus cho textbox trong template-->
+                <PasswordBox x:Name="pwbPassword" Password="123456" KeyboardNavigation.TabNavigation="Continue" Background="Transparent" BorderThickness="0"/>
+            </Border>
+            <CheckBox x:Name="ckbShowPassword" Content="Hiện mật khẩu" FontSize="24" BorderBrush="Silver" Margin="0,10,0,40" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+            <Button Content="Đăng nhập" Click="Button_Click" IsDefault="True"/>
+        </StackPanel>
+        
+        <ToggleButton Name="btnTestConnection" 
+               Content="Click để kiểm tra kết nối..." 
+               Height="80" 
+               FontSize="36" 
+               FontStyle="Italic" 
+               FontWeight="Bold" 
+               VerticalAlignment="Bottom"
+               Checked="btnTestConnection_Checked"/>
+
+        <Border x:Name="borderSpoon" Focusable="False"
+                VerticalAlignment="Bottom"
+                Height="80"
+                Margin="0 0 0 83"
+                Visibility="Collapsed">
+            <Canvas >
+                <Image x:Name="imgSpoon" Canvas.Left="0" Source="Image/spoon.png" Width="80"  RenderTransformOrigin="0.5 0.5"/>
+                <Image x:Name="imgNoodle" Canvas.Left="80" Source="Image/noodle.png" Width="80" RenderTransformOrigin="0.5 0.5" />
+            </Canvas>
+
+        </Border>
+    </Grid>
+</Window>
