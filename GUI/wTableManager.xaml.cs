@@ -202,6 +202,10 @@ namespace GUI
             tablesViewSource.View.Filter = (obj) => (obj as Table).UsingState == UsingState.Serving;
             lsvTables.ItemsSource = tablesViewSource.View;
 
+            var view = new ListCollectionView(Tables);
+            view.Filter = (obj) => (obj as Table).UsingState == UsingState.Serving;
+            cbTables.ItemsSource = view;
+
             LoadBrushes();
             LoadFonts();
             LoadSkins();
